@@ -27,6 +27,9 @@ const Home = () => {
   const isDragging = useRef(false);
   let animationFrameId = useRef(null);
 
+  // 🌍 Track plane position
+  const [planePosition, setPlanePosition] = useState({ x: 0, y: 0, z: 0 });
+
   // ✅ Initialize audio inside useEffect (Fixes blank screen issue)
   useEffect(() => {
     audioRef.current = new Audio(sakura);
@@ -69,7 +72,7 @@ const Home = () => {
   }, []);
 
   // ✅ Smoother Keyboard Rotation
-  const rotationSpeed = Math.PI / 300; // Slower and smoother
+  const rotationSpeed = Math.PI / 400; // Slower and smoother
 
   const smoothRotate = (direction) => {
     setIslandRotation(([x, y, z]) => [x, y + direction * rotationSpeed, z]);
@@ -106,6 +109,20 @@ const Home = () => {
       setShowPopup(true);
     }
   }, [currentStage]); // ✅ Only updates when currentStage changes
+
+  // Update plane position when necessary (this could be your plane movement logic)
+  useEffect(() => {
+    // Example plane movement update:
+    const interval = setInterval(() => {
+      setPlanePosition((prevPosition) => ({
+        x: prevPosition.x + 0.1, // Update this with your logic
+        y: prevPosition.y,
+        z: prevPosition.z
+      }));
+    }, 100);
+
+    return () => clearInterval(interval); // Cleanup when component unmounts
+  }, []);
 
   return (
     <section className="w-full h-screen relative">
@@ -151,8 +168,7 @@ const Home = () => {
           />
 
           {/* Bird */}
-          <Bird position={[0, 25, -20]} scale={[5, 5, 5]} />
-
+          <Bird isDayMode={isDayMode} islandRotation={islandRotation} planePosition={planePosition} />
           {/* ✅ Plane responds smoothly to keyboard and mouse dragging */}
           <Plane
             isRotating={isRotating}
@@ -160,6 +176,7 @@ const Home = () => {
             rotation={[0, islandRotation[1] + Math.PI / 2, 0]}
             scale={[5, 5, 5]}
           />
+         
         </Suspense>
       </Canvas>
 
