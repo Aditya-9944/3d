@@ -19,3 +19,4 @@ An interactive 3D scene built with **React**, **Three.js**, and **Vite**, showca
 - 🌈 Interactive camera + lighting
 - 🔁 Real-time rotation & animation
 - ⚡ Fast build using Vite
+![Uploading Screenshot 2025-03-31 at 12.04.15 AM.png…]()
